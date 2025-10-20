@@ -66,38 +66,7 @@ sbatch -t 23:59:00 -A different_account script.sh
 
 ---
 
-## **Slide 4: MPI/Parallel Execution Failures**
-
-### **MPI Version Mismatch - #1 User Issue**
-```bash
-# Error: "OPAL ERROR: Unreachable in file pmix3x_client.c"
-
-# Diagnosis
-module list
-which mpirun
-ldd $(which mpirun) | grep pmix
-srun --mpi=list
-
-# Resolution
-module purge
-module load gcc/12.1.0 openmpi/4.1.5
-srun --mpi=pmix_v4 ./mpi_app
-```
-
-### **InfiniBand/Network Issues**
-```bash
-# Test connectivity
-srun -N 2 hostname
-srun -N 2 --ntasks=2 ib_write_bw
-
-# Force IB transport
-export OMPI_MCA_btl=self,vader,openib
-export UCX_NET_DEVICES=mlx5_0:1
-```
-
----
-
-## **Slide 5: Hardware Detection Failures**
+## **Slide 4: Hardware Detection Failures**
 
 ### **Memory Issues - OOM Kills**
 ```bash
@@ -408,10 +377,10 @@ scontrol reconfig
 
 # Check time sync
 pdsh -w node[001-100] date
-chrony sources -v
+chronyc sources -v
 
 # Force sync
-pdsh -w node[001-100] "chrony makestep"
+pdsh -w node[001-100] "sudo chronyc makestep"
 ```
 
 ---
