@@ -956,6 +956,25 @@ sudo systemctl restart slurmctld
 scontrol show config | grep PriorityFlags
 ```
 
+## NOTES
+Visual Comparison 0f (O(n²)) vs. (O(n)) Fairshare Scheduling Performance
+
+Classic Fairshare (O(n²)):
+
+Time to schedule vs. Number of jobs:
+1,000 jobs  ████ (500 ms)
+2,000 jobs  ████████████████ (2,000 ms) ← Gets MUCH worse!
+3,000 jobs  ████████████████████████████████████ (4,500 ms)
+Notice: Doubling jobs quadruples time!
+
+Fairtree (O(n)):
+
+Time to schedule vs. Number of jobs:
+1,000 jobs  ██ (50 ms)
+2,000 jobs  ████ (100 ms) ← Scales linearly
+3,000 jobs  ██████ (150 ms)
+Notice: Doubling jobs only doubles time.
+
 
 ## KEY TAKEAWAYS FROM LAB
 
